@@ -2,10 +2,15 @@ import React, { ReactChild } from 'react'
 import {
   FormControl,
   FormLabel,
-  Input
+  Input,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  TableContainer,
 } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
-import { addTodo } from 'redux/actions/todoAction'
+import { addTodo, deleteTodo } from 'redux/actions/todoAction'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -16,12 +21,17 @@ const AddToDo = () => {
   const handleSubmit = () => {
     const data = {
       title: title,
-      task: task
+      task: task,
+      id: new Date().getTime(),
     }
     dispatch(addTodo(data))
   }
   const getToDo = useSelector(state => state)
-  const todoData = getToDo.todo.todos 
+  const todoData = getToDo.todo.todos;
+
+  const handleDeleteBtn: any = (id: number) => {
+    dispatch(deleteTodo(id));
+  }
   return (
     <React.Fragment>
       <FormControl>
@@ -32,11 +42,21 @@ const AddToDo = () => {
         <Input id='text' type='text' onChange={(e) => setTask(e.target.value)} />
         <Button colorScheme='blue' onClick={handleSubmit}>Button</Button>
       </FormControl>
-      <ul>
-        {todoData ? todoData.map((data: any) => 
-          <li><p>Title: {data.title}</p><p>Task: {data.task}</p></li>
-        ):""}
-    </ul>
+      <TableContainer className='max-w-none'>
+        <Table variant='simple'>
+          <Tbody>
+            {todoData && todoData.map((data: any, i: number) =>
+
+              <Tr key={i}>
+                <Td>{data.title}</Td>
+                <Td>{data.task}</Td>
+                <Td> <Button colorScheme='blue' onClick={() => handleDeleteBtn(data.id)}>Delete</Button></Td>
+              </Tr>
+            )}
+
+          </Tbody>
+        </Table>
+      </TableContainer>
     </React.Fragment>
   )
 }

@@ -6,3 +6,9 @@ export const addTodo = (data: Object) => {
     payload: data
   }
 }
+export const deleteTodo = (data: number) => {
+  return {
+    type: DELETE_TODO,
+    payload: data
+  }
+}
