@@ -26,8 +26,7 @@ const AddToDo = () => {
     }
     dispatch(addTodo(data))
   }
-  const getToDo = useSelector(state => state)
-  const todoData = getToDo.todo.todos;
+  const getToDo = useSelector((state: any) => state.todo.todos)
 
   const handleDeleteBtn: any = (id: number) => {
     dispatch(deleteTodo(id));
@@ -45,7 +44,7 @@ const AddToDo = () => {
       <TableContainer className='max-w-none'>
         <Table variant='simple'>
           <Tbody>
-            {todoData && todoData.map((data: any, i: number) =>
+            {getToDo && getToDo.map((data: any, i: number) =>
 
               <Tr key={i}>
                 <Td>{data.title}</Td>
